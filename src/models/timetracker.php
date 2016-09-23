@@ -38,12 +38,13 @@ class TimeTracker
         $results->execute();
     }
 
-    public function updateProject($title, $category = 1)
+    public function updateProject($id, $title, $category = 1)
     {
-        $sql = 'INSERT INTO projects (title, category_id) VALUES (?, ?)';
+        $sql = 'UPDATE projects SET title = ?, category = ? WHERE project_id = ?';
         $results = $this->db->prepare($sql);
         $results->bindValue(1, $title, PDO::PARAM_STR);
         $results->bindValue(2, $category, PDO::PARAM_INT);
+        $results->bindValue(3, $id, PDO::PARAM_INT);
         $results->execute();
     }
 
