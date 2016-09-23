@@ -18,12 +18,36 @@ $app->group('/projects', function () {
     })->setName('projects');
 
     $this->map(['GET', 'DELETE', 'PUT'], '/{id:[0-9]+}', function (Request $request, Response $response, $args) {
-        // Find, delete or replace project identified by $args['id']
-        $project = $this->timetracker->getProject($args['id']);
+        // Find, delete or update project identified by $args['id']
+        if ($request->isPut()) {
+            $this->timetracker->updateProject($args['id']);
+        } elseif ($request->isDelete()) {
+            $this->timetracker->deleteProject($args['id']);
+        } else {
+            $project = $this->timetracker->getProject($args['id']);
+        }
         $response = $this->view->render($response, "project.php", [
             'project' => $project,
             'router' => $this->router
         ]);
         return $response;
     })->setName('project');
+
+    $this->map(['GET', 'POST'], '/new', function (Request $request, Response $response, $args) {
+        if ($request->isPost()) {
+            $body = $this->request->getParsedBody();
+            $title = $body['title'];
+            $cat_id = $body['category_id'];
+            if(!empty($title)) {
+                $cleanTitle = filter_var($title, FILTER_SANITIZE_STRING);
+                $cleanCatId = filter_var($cat_id, FILTER_SANITIZE_NUMBER_INT);
+                $this->timetracker->addProject($title, $cleanCatId);
+            } else {
+                echo "Empty field";
+            }
+
+        }
+        $response = $this->view->render($response, "project.php", ['router' => $this->router]);
+        return $response;
+    })->setName('newproject');
 });
