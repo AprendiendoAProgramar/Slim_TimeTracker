@@ -11,3 +11,7 @@ $container['db'] = function ($c) {
 };
 
 $container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/../src/views/");
+
+$container['timetracker'] = function ($c) {
+    return new TimeTracker($c->db);
+};
