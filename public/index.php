@@ -1,4 +1,7 @@
 <?php
+// Start PHP session
+session_start(); //by default requires session storage
+
 //require '../vendor/autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
 
