@@ -12,9 +12,17 @@ class TimeTracker
         $this->db = $pdo;
     }
 
+    public function getCategoryList()
+    {
+        $sql = 'SELECT * FROM categories';
+        $results = $this->db->prepare($sql);
+        $results->execute();
+        return $results->fetchAll();
+    }
+
     public function getProjectList()
     {
-        $sql = 'SELECT * FROM projects';
+        $sql = 'SELECT * FROM projects ORDER BY project_id';
         $results = $this->db->prepare($sql);
         $results->execute();
         return $results->fetchAll();
@@ -29,21 +37,21 @@ class TimeTracker
         return $results->fetch();
     }
 
-    public function addProject($title, $category = 1)
+    public function addProject($title, $cat_id)
     {
         $sql = 'INSERT INTO projects (title, category_id) VALUES (?, ?)';
         $results = $this->db->prepare($sql);
         $results->bindValue(1, $title, PDO::PARAM_STR);
-        $results->bindValue(2, $category, PDO::PARAM_INT);
+        $results->bindValue(2, $cat_id, PDO::PARAM_INT);
         $results->execute();
     }
 
-    public function updateProject($id, $title, $category = 1)
+    public function updateProject($id, $title, $cat_id)
     {
-        $sql = 'UPDATE projects SET title = ?, category = ? WHERE project_id = ?';
+        $sql = 'UPDATE projects SET title = ?, category_id = ? WHERE project_id = ?';
         $results = $this->db->prepare($sql);
         $results->bindValue(1, $title, PDO::PARAM_STR);
-        $results->bindValue(2, $category, PDO::PARAM_INT);
+        $results->bindValue(2, $cat_id, PDO::PARAM_INT);
         $results->bindValue(3, $id, PDO::PARAM_INT);
         $results->execute();
     }
