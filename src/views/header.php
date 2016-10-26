@@ -7,8 +7,9 @@
     <body>
         <nav>
         <ul>
+            <li><a href="<?php echo $router->pathFor('home'); ?>">Home</a></li>
+            <li><a href="<?php echo $router->pathFor('tasks'); ?>">Tasks</a></li>
             <li><a href="<?php echo $router->pathFor('projects'); ?>">Projects</a></li>
-            <!-- <li><a href="<?php //$router->pathFor('tasks'); ?>"></a></li> -->
-            <!-- <li><a href="<?php //$router->pathFor('reports'); ?>"></a></li> -->
+            <!-- <li><a href="<?php //echo $router->pathFor('reports'); ?>"></a></li> -->
         </ul>
         </nav>

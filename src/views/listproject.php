@@ -12,7 +12,7 @@ if (isset($msg)) {
     }
 }
 ?>
-<a href="<?php echo $router->pathFor('newproject')?>">New</a>
+<a href="<?php echo $router->pathFor('newproject')?>">Add Project</a>
 <ul>
 <?php
     foreach ($projects as $item) {
