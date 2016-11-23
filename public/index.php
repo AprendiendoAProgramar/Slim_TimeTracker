@@ -7,7 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 spl_autoload_register(function ($classname) {
     //require ('../src/models/' . $classname . '.php');
-    require (__DIR__ . '/../src/models/' . $classname . '.php');
+    require __DIR__ . '/../src/models/' . $classname . '.php';
 });
 
 // Add config settings and instantiate the App
