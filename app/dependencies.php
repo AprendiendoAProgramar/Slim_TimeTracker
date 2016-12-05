@@ -18,11 +18,6 @@ $container['CategoryModel'] = new \App\Models\CategoryModel($container);
 $container['ProjectModel'] = new \App\Models\ProjectModel($container);
 $container['TaskModel'] = new \App\Models\TaskModel($container);
 
-//Eliminar si todo está correcto
-//$container['timetracker'] = function ($c) {
-//    return new TimeTracker($c->db);
-//};
-
 $container['flash'] = function () {
     return new \Slim\Flash\Messages();
 };
