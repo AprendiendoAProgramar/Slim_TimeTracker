@@ -6,8 +6,9 @@ session_start(); //by default requires session storage
 require __DIR__ . '/../vendor/autoload.php';
 
 spl_autoload_register(function ($classname) {
-    //require ('../src/models/' . $classname . '.php');
-    require __DIR__ . '/../src/models/' . $classname . '.php';
+    $file = str_replace('\\', '/', $classname);
+    //require '../' . $file . '.php';
+    require __DIR__ . '/../' . $file . '.php';
 });
 
 // Add config settings and instantiate the App

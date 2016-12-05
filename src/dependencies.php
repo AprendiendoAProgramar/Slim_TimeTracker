@@ -12,9 +12,16 @@ $container['db'] = function ($c) {
 
 $container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/../src/views/");
 
-$container['timetracker'] = function ($c) {
-    return new TimeTracker($c->db);
-};
+$container['ProjectController'] = new \Src\Controllers\ProjectController($container);
+$container['TaskController'] = new \Src\Controllers\TaskController($container);
+$container['CategoryModel'] = new \Src\Models\CategoryModel($container);
+$container['ProjectModel'] = new \Src\Models\ProjectModel($container);
+$container['TaskModel'] = new \Src\Models\TaskModel($container);
+
+//Eliminar si todo está correcto
+//$container['timetracker'] = function ($c) {
+//    return new TimeTracker($c->db);
+//};
 
 $container['flash'] = function () {
     return new \Slim\Flash\Messages();
