@@ -1,5 +1,5 @@
 <?php
-namespace Src\Controllers;
+namespace App\Controllers;
 
 class ProjectController extends Controller
 {

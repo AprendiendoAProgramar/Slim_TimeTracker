@@ -10,13 +10,13 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
-$container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/../src/views/");
+$container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/../app/views/");
 
-$container['ProjectController'] = new \Src\Controllers\ProjectController($container);
-$container['TaskController'] = new \Src\Controllers\TaskController($container);
-$container['CategoryModel'] = new \Src\Models\CategoryModel($container);
-$container['ProjectModel'] = new \Src\Models\ProjectModel($container);
-$container['TaskModel'] = new \Src\Models\TaskModel($container);
+$container['ProjectController'] = new \App\Controllers\ProjectController($container);
+$container['TaskController'] = new \App\Controllers\TaskController($container);
+$container['CategoryModel'] = new \App\Models\CategoryModel($container);
+$container['ProjectModel'] = new \App\Models\ProjectModel($container);
+$container['TaskModel'] = new \App\Models\TaskModel($container);
 
 //Eliminar si todo está correcto
 //$container['timetracker'] = function ($c) {

@@ -1,7 +1,7 @@
 <?php
-namespace Src\Models;
+namespace App\Controllers;
 
-class Model
+class Controller
 {
     protected $container;
 
