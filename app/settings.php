@@ -6,10 +6,14 @@ return [
         'addContentLengthHeader' => false,
 
         'db' => [
+            'driver' => 'mysql',
             'host' => 'localhost',
-            'user' => 'root',
+            'database' => 'timetracker',
+            'username' => 'root',
             'password' => '',
-            'dbname' => 'timetracker'
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
         ]
     ],
 ];

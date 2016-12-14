@@ -12,8 +12,8 @@ $app->group('/projects', function () {
     $this->get('/{id:[0-9]+}', 'ProjectController:getProject')->setName('project');
     $this->put('/{id:[0-9]+}', 'ProjectController:updateProject');
     $this->delete('/{id:[0-9]+}', 'ProjectController:deleteProject');
-    $this->get('/new', 'ProjectController:newProject')->setName('newproject');
-    $this->post('/new', 'ProjectController:addProject');
+    $this->get('/new', 'ProjectController:getNewProject')->setName('newproject');
+    $this->post('/new', 'ProjectController:postProject');
 });
 
 $app->group('/tasks', function () {
@@ -21,6 +21,6 @@ $app->group('/tasks', function () {
     $this->get('/{id:[0-9]+}', 'TaskController:getTask')->setName('task');
     $this->put('/{id:[0-9]+}', 'TaskController:updateTask');
     $this->delete('/{id:[0-9]+}', 'TaskController:deleteTask');
-    $this->get('/new', 'TaskController:newTask')->setName('newtask');
-    $this->post('/new', 'TaskController:addTask');
+    $this->get('/new', 'TaskController:getNewTask')->setName('newtask');
+    $this->post('/new', 'TaskController:postTask');
 });

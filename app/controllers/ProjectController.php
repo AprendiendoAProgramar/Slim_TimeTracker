@@ -1,12 +1,15 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\ProjectModel as ProjectM;
+use App\Models\CategoryModel as CatM;
+
 class ProjectController extends Controller
 {
     public function getProjects($request, $response, $args)
     {
         $msg = $this->flash->getMessages();
-        $projects = $this->ProjectModel->getProjectList();
+        $projects = ProjectM::orderBy('project_id', 'asc')->get();
         $response = $this->view->render($response, "listproject.php", [
             'projects' => $projects,
             'router' => $this->router,
@@ -15,9 +18,9 @@ class ProjectController extends Controller
         return $response;
     }
 
-    public function newProject($request, $response, $args)
+    public function getNewProject($request, $response, $args)
     {
-        $categories = $this->CategoryModel->getCategoryList();
+        $categories = CatM::orderBy('title', 'asc')->get();
         $msg = $this->flash->getMessages();
         $response = $this->view->render($response, "project.php", [
             'router' => $this->router,
@@ -27,24 +30,9 @@ class ProjectController extends Controller
         return $response;
     }
 
-    public function getProject($request, $response, $args)
-    {
-        $project = $this->ProjectModel->getProject($args['id']);
-        $categories = $this->CategoryModel->getCategoryList();
-        $msg = $this->flash->getMessages();
-        $response = $this->view->render($response, "project.php", [
-            'project' => $project,
-            'categories' => $categories,
-            'router' => $this->router,
-            'msg' => $msg
-        ]);
-        return $response;
-    }
-
-    public function addProject($request, $response, $args)
+    public function postProject($request, $response, $args)
     {
         $body = $request->getParsedBody();
-        var_dump($body);
         $title = trim($body['title']);
         $cat_id = trim($body['category_id']);
         $uri = $request->getUri();
@@ -55,12 +43,29 @@ class ProjectController extends Controller
         } else {
             $cleanTitle = filter_var($title, FILTER_SANITIZE_STRING);
             $cleanCatId = filter_var($cat_id, FILTER_SANITIZE_NUMBER_INT);
-            $this->ProjectModel->addProject($cleanTitle, $cleanCatId);
+            ProjectM::create([
+                'title' => $cleanTitle,
+                'category_id' => $cleanCatId
+            ]);
             // Set flash message for next request
             $this->flash->addMessage('ok', 'Added new Project');
             // Redirect
             return $response->withStatus(200)->withHeader('Location', $this->router->pathFor('projects'));
         }
+    }
+
+    public function getProject($request, $response, $args)
+    {
+        $project = ProjectM::find($args['id']);
+        $categories = CatM::orderBy('title', 'asc')->get();
+        $msg = $this->flash->getMessages();
+        $response = $this->view->render($response, "project.php", [
+            'project' => $project,
+            'categories' => $categories,
+            'router' => $this->router,
+            'msg' => $msg
+        ]);
+        return $response;
     }
 
     public function updateProject($request, $response, $args)
@@ -76,7 +81,10 @@ class ProjectController extends Controller
         } else {
             $cleanTitle = filter_var($title, FILTER_SANITIZE_STRING);
             $cleanCatId = filter_var($cat_id, FILTER_SANITIZE_NUMBER_INT);
-            $this->ProjectModel->updateProject($args['id'], $cleanTitle, $cleanCatId);
+            ProjectM::where('project_id', $args['id'])->update([
+                'title' => $cleanTitle,
+                'category_id' => $cleanCatId
+            ]);
             // Set flash message for next request
             $this->flash->addMessage('ok', 'Project saved');
             // Redirect
@@ -86,7 +94,7 @@ class ProjectController extends Controller
 
     public function deleteProject($request, $response, $args)
     {
-        $this->ProjectModel->deleteProject($args['id']);
+        ProjectM::find($args['id'])->delete();
         // Set flash message for next request
         $this->flash->addMessage('ok', 'Project deleted');
         // Redirect

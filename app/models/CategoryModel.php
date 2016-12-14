@@ -1,13 +1,11 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
+
 class CategoryModel extends Model
 {
-    public function getCategoryList()
-    {
-        $sql = 'SELECT * FROM categories';
-        $results = $this->db->prepare($sql);
-        $results->execute();
-        return $results->fetchAll();
-    }
+    protected $table = 'categories';
+    protected $primaryKey = 'category_id';
+    public $timestamps = false;
 }

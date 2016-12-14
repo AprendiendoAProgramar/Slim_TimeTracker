@@ -1,22 +1,20 @@
 <?php
 $container = $app->getContainer();
 
-$container['db'] = function ($c) {
-    $db = $c['settings']['db'];
-    $dsn = 'mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'];
-    $pdo = new PDO($dsn, $db['user'], $db['password']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    return $pdo;
+// Service factory for the ORM
+$capsule = new \Illuminate\Database\Capsule\Manager;
+$capsule->addConnection($container['settings']['db']);
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
+$container['db'] = function ($container) use ($capsule) {
+    return $capsule;
 };
 
 $container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/../app/views/");
 
 $container['ProjectController'] = new \App\Controllers\ProjectController($container);
 $container['TaskController'] = new \App\Controllers\TaskController($container);
-$container['CategoryModel'] = new \App\Models\CategoryModel($container);
-$container['ProjectModel'] = new \App\Models\ProjectModel($container);
-$container['TaskModel'] = new \App\Models\TaskModel($container);
 
 $container['flash'] = function () {
     return new \Slim\Flash\Messages();
