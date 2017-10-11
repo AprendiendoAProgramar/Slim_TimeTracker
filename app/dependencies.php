@@ -13,6 +13,8 @@ $container['db'] = function ($container) use ($capsule) {
 
 $container['view'] = new \Slim\Views\PhpRenderer(__DIR__ . "/../app/views/");
 
+$container['validator'] = new \App\Validation\Validator();
+
 $container['ProjectController'] = new \App\Controllers\ProjectController($container);
 $container['TaskController'] = new \App\Controllers\TaskController($container);
 

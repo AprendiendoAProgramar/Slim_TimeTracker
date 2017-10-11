@@ -16,7 +16,7 @@ include 'header.php';
 <h1><?php echo $title ?></h1>
 
 <?php
-if (isset($msg)) {
+if (isset($msg) && !empty($msg)) {
     foreach ($msg as $key => $item) {
         echo "<p class='$key'>$item[0]</p>";
     }

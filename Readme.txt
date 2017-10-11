@@ -1,0 +1,1 @@
+Para cargar todos los modelos y controladores automaticamente hemos modificado el archivo composer.json añadiendo "psr-4" y actualizando el archivo "autoload" con el comando "composer dump-autoload -o".

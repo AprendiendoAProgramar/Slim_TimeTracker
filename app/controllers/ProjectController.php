@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\ProjectModel as ProjectM;
 use App\Models\CategoryModel as CatM;
+use Respect\Validation\Validator as v;
 
 class ProjectController extends Controller
 {
@@ -32,23 +33,24 @@ class ProjectController extends Controller
 
     public function postProject($request, $response, $args)
     {
-        $body = $request->getParsedBody();
-        $title = trim($body['title']);
-        $cat_id = trim($body['category_id']);
-        $uri = $request->getUri();
-        if(empty($title) || empty($cat_id)) {
-            // Set flash message for next request
-            $this->flash->addMessage('empty', 'Empty field');
+        $validation = $this->validator->validate($request, [
+            'title' => v::notEmpty()->alnum(),
+            'category_id' => v::notEmpty()
+        ]);
+        
+        if($validation->failed()) {
+            $uri = $request->getUri();
+            // Set flash message for next request    
+            $this->flash->addMessage('error', 'Something wrong!');
             return $response->withStatus(200)->withHeader('Location', $uri);
         } else {
-            $cleanTitle = filter_var($title, FILTER_SANITIZE_STRING);
-            $cleanCatId = filter_var($cat_id, FILTER_SANITIZE_NUMBER_INT);
+            $body = $request->getParsedBody();
             ProjectM::create([
-                'title' => $cleanTitle,
-                'category_id' => $cleanCatId
+                'title' => $body['title'],
+                'category_id' => $body['category_id']
             ]);
             // Set flash message for next request
-            $this->flash->addMessage('ok', 'Added new Project');
+            $this->flash->addMessage('info', 'Added new Project');
             // Redirect
             return $response->withStatus(200)->withHeader('Location', $this->router->pathFor('projects'));
         }
